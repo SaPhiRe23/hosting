@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  proxy:
+    image: caddy:2-alpine
+    container_name: hosting_caddy
+    ports:
+      - "80:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    networks:
+      - proxy_net
+
+  backend:
+    build: ./backend
+    container_name: hosting_backend
+    ports:
+      - "5000:5000"
+    networks:
+      - proxy_net
+    # montamos docker socket para que el backend pueda construir imágenes en el host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./projects:/app/../projects
+    # aumentar limits si es necesario
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  frontend:
+    build: ./frontend/mainview
+    container_name: hosting_frontend
+    ports:
+      - "8080:80"
+    networks:
+      - proxy_net
+
+networks:
+  proxy_net:
+    driver: bridge

@@ -1,0 +1,25 @@
+{
+  auto_https off
+}
+
+:80 {
+    @sub host *.localhost
+
+    handle @sub {
+        # Caddy intentará resolver el host (por ejemplo miweb.andres.localhost) vía DNS interno.
+        # Normalmente Docker interno resuelve nombres de contenedores, por lo que backend crea contenedores
+        # con name = miweb-andres y Caddy podrá resolverlos si están en la misma red docker.
+        # Aquí hacemos un proxy directo al host pedido; si no existe, fallback al frontend.
+        reverse_proxy {http.request.host} {
+            # fallback behaviour is provided below
+        }
+        handle_errors {
+            reverse_proxy hosting_frontend:80
+        }
+    }
+
+    # fallback general -> frontend UI
+    handle {
+        reverse_proxy hosting_frontend:80
+    }
+}
