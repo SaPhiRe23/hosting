@@ -3,7 +3,7 @@ Plataforma de Hosting Autogestionado (Docker + Caddy + Flask + React)
 Este repositorio implementa una plataforma de hosting local donde cualquier usuario puede:
 
 - Registrar una cuenta  
-- Seleccionar una plantilla (Node, Python, Static, etc.)  
+- Seleccionar una plantilla (Static, React, Flask, etc.)  
 - Proporcionar un repositorio Git  
 - Generar automáticamente:
   - Dockerfile  
