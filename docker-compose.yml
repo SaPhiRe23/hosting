@@ -1,4 +1,3 @@
-version: "3.8"
 
 services:
   proxy:
@@ -25,6 +24,9 @@ services:
     # aumentar limits si es necesario
     environment:
       - PYTHONUNBUFFERED=1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - DOCKER_TLS_VERIFY=
+      - DOCKER_CERT_PATH=
 
   frontend:
     build: ./frontend/mainview
